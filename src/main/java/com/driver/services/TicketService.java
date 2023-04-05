@@ -46,27 +46,30 @@ public class TicketService {
 
 
 
-        Train train=trainRepository.findById(bookTicketEntryDto.getTrainId()).get();
-        int bookedSeats=0;
-        List<Ticket>booked=train.getBookedTickets();
-        for(Ticket ticket:booked){
-            bookedSeats+=ticket.getPassengersList().size();
+        //get already booked seat in train
+        Train train = trainRepository.findById(bookTicketEntryDto.getTrainId()).get();
+        int bookedSeats = 0;
+        List<Ticket>booked = train.getBookedTickets();
+        for(Ticket ticket : booked){
+            bookedSeats += ticket.getPassengersList().size();
         }
 
-        if(bookedSeats+bookTicketEntryDto.getNoOfSeats()> train.getNoOfSeats()){
+        //check ki seat avialble hai ki nahi
+        if(bookedSeats+bookTicketEntryDto.getNoOfSeats() > train.getNoOfSeats()){
             throw new Exception("Less tickets are available");
         }
 
-        String stations[]=train.getRoute().split(",");
-        List<Passenger>passengerList=new ArrayList<>();
-        List<Integer>ids=bookTicketEntryDto.getPassengerIds();
-        for(int id: ids){
+
+        String stations[] = train.getRoute().split(",");
+        List<Passenger>passengerList = new ArrayList<>();
+        List<Integer>ids = bookTicketEntryDto.getPassengerIds();
+        for(int id : ids){
             passengerList.add(passengerRepository.findById(id).get());
         }
-        int x=-1,y=-1;
-        for(int i=0;i<stations.length;i++){
+        int x = -1,y = -1;
+        for(int i=0; i<stations.length; i++){
             if(bookTicketEntryDto.getFromStation().toString().equals(stations[i])){
-                x=i;
+                x = i;
                 break;
             }
         }

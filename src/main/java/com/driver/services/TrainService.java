@@ -104,45 +104,45 @@ public class TrainService {
         //  in a happy case we need to find out the number of such people.
 
 
-        int numberOfPeople;
+//        int numberOfPeople;
+//        Train train = trainRepository.findById(trainId).get();
+//        String route = train.getRoute();
+//        String arr[]= route.split(",");
+//        for (int i=0; i<route.length(); i++) {
+//            if(arr[i].equals(station)) {
+//               return numberOfPeople = train.getBookedTickets().size();
+//            }
+//        }
+//        throw new Exception("Train is not passing from this station");
+
+        //We need to find out the number of people who will be boarding a train from a particular station
         Train train = trainRepository.findById(trainId).get();
-        String route = train.getRoute();
-        String arr[]= route.split(",");
-        for (int i=0; i<route.length(); i++) {
-            if(arr[i].equals(station)) {
-               return numberOfPeople = train.getBookedTickets().size();
+        String reqStation = station.toString();
+        String arr[] = train.getRoute().split(",");
+        boolean found = false;
+
+        for(String s:arr){
+            if(s.equals(reqStation)){
+                found = true;
+                break;
             }
         }
-        throw new Exception("Train is not passing from this station");
+        //if the trainId is not passing through that station
 
-//        //We need to find out the number of people who will be boarding a train from a particular station
-//        Train train = trainRepository.findById(trainId).get();
-//        String reqStation = station.toString();
-//        String arr[] = train.getRoute().split(",");
-//        boolean found = false;
-//
-//        for(String s:arr){
-//            if(s.equals(reqStation)){
-//                found = true;
-//                break;
-//            }
-//        }
-//        //if the trainId is not passing through that station
-//
-//        if(found == false){
-//            throw new Exception("Train is not passing from this station");
-//        }
-//
-//        int noOfPassengers=0;
-//        //throw new Exception("Train is not passing from this station");
-//        List<Ticket>ticketList= train.getBookedTickets();
-//        for(Ticket ticket:ticketList){
-//            if(ticket.getFromStation().toString().equals(reqStation)){
-//                noOfPassengers+=ticket.getPassengersList().size();
-//            }
-//        }
-//
-//        return noOfPassengers;
+        if(found == false){
+            throw new Exception("Train is not passing from this station");
+        }
+
+        int noOfPassengers = 0;
+        //throw new Exception("Train is not passing from this station");
+        List<Ticket>ticketList= train.getBookedTickets();
+        for(Ticket ticket:ticketList){
+            if(ticket.getFromStation().toString().equals(reqStation)){
+                noOfPassengers+=ticket.getPassengersList().size();
+            }
+        }
+
+        return noOfPassengers;
 
     }
 
